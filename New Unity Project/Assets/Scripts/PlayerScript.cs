@@ -40,4 +40,9 @@ public class PlayerScript : MonoBehaviour
         //rb.transform.position = change;
 
     }
+
+    public void TriggerWithEventExample()
+    {
+        Debug.Log("I am triggered with a lose coupled signal event system");
+    }
 }
