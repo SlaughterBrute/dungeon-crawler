@@ -6,14 +6,14 @@ using UnityEngine.Events;
 public class SignalEvent : MonoBehaviour
 {
     [SerializeField]
-    private UnityEvent raisedEvent;
+    private UnityEvent raiseEvent;
     [SerializeField]
     private SignalTrigger trigger;
 
 
     public void Raise()
     {
-        raisedEvent.Invoke();
+        raiseEvent.Invoke();
     }
 
     private void OnEnable()

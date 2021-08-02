@@ -10,6 +10,11 @@ public class PlayerScript : MonoBehaviour
 	[SerializeField]
 	private float speed = 0.8f;
 	Rigidbody2D rb;
+    [SerializeField]
+    private float shootDelay = 1f; // could connect to Scriptable object to be able to change (could be useful for powerups)
+    private float timeSinceLastShot = 0;
+    [SerializeField]
+    GameObject pfProjectile;
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +26,28 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         Move();
-        //horizontal = Input.GetAxisRaw("Horizontal");
-        //vertical = Input.GetAxisRaw("Vertical");
+        Shoot();
+    }
 
-        //rb.velocity = new Vector2(horizontal * speed, vertical * speed);
+    void Shoot()
+    {
+        float verticalShootDirection = Input.GetAxisRaw("Shoot vertical");
+        float horizontalShootDirection = Input.GetAxisRaw("Shoot horizontal");
+        timeSinceLastShot += Time.deltaTime;
+        if((horizontalShootDirection != 0 || verticalShootDirection != 0 ) && timeSinceLastShot >= shootDelay)
+        {
+            timeSinceLastShot = 0;
+            if(pfProjectile != null)
+            {
+                Transform projectileTransform = Instantiate(pfProjectile, transform.position, Quaternion.identity).transform;
+                ProjectileScript projectile = projectileTransform.GetComponent<ProjectileScript>();
+                Vector3 direction = new Vector3(horizontalShootDirection, verticalShootDirection, 0);
+                //Debug.Log(direction);
+                projectile.setUp(direction);
+                //projectile. (transform.position, transform.position, projectileSpeed);
+            }
+            
+        }
     }
 
     void Move()
@@ -34,11 +57,6 @@ public class PlayerScript : MonoBehaviour
         change.y = Input.GetAxisRaw("Vertical");
         change *= speed * Time.deltaTime;
         rb.transform.Translate(change);
-
-        
-        //rb.velocity = new Vector2(change.x*speed, change.y*speed);
-        //rb.transform.position = change;
-
     }
 
     public void TriggerWithEventExample()
