@@ -55,6 +55,7 @@ public class PlayerScript : MonoBehaviour
 		change = Vector3.zero;
 		change.x = Input.GetAxisRaw("Horizontal");
         change.y = Input.GetAxisRaw("Vertical");
+        change.Normalize();
         change *= speed * Time.deltaTime;
         rb.transform.Translate(change);
     }
