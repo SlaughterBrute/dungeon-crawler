@@ -1,0 +1,4 @@
+1. Wall
+2. Ground
+3. Top wall & ground
+4. Bottom ground & wall
