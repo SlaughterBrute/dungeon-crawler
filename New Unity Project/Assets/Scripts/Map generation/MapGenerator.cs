@@ -15,6 +15,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField][Range(0,1)] private float persistance;
     [SerializeField] private float lacunarity; // Detail for each octave
     [SerializeField] private string seed;
+    [SerializeField] private TerrainType[] terrainTypes;
 
     public void OnValidate()
     {
@@ -36,7 +37,7 @@ public class MapGenerator : MonoBehaviour
     {
         float[,] noiceMap = NoiseGenerator.GenerateNoiceMap(mapWidth, mapHeight, noiseScale, octaves, persistance, lacunarity, seed, x, y);
         DisplayMapReference = FindObjectOfType<DisplayMap>();
-        DisplayMapReference.DrawMap(noiceMap);
+        DisplayMapReference.DrawMap(noiceMap, terrainTypes);
     }
 
     private void Update()
@@ -44,4 +45,11 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         x += 1 * Time.deltaTime;
     }
+}
+
+[System.Serializable]
+public struct TerrainType{
+    public string terrainName;
+    public float height;
+    public Color terrainColor;
 }

@@ -6,7 +6,7 @@ public class DisplayMap : MonoBehaviour
 {
     [SerializeField]
     private Renderer textureRenderer;
-    public void DrawMap(float[,] noiceMap)
+    public void DrawMap(float[,] noiceMap, TerrainType[] terrainTypes)
     {
         int width = noiceMap.GetLength(0);
         int height = noiceMap.GetLength(1);
@@ -17,7 +17,33 @@ public class DisplayMap : MonoBehaviour
         {
             for(int y = 0; y < height; y++)
             {
-                colors[x + y * width] = Color.Lerp(Color.white, Color.black, noiceMap[x, y]);
+                if(terrainTypes.Length == 0 || terrainTypes == null) //withour color
+                {
+                    colors[x + y * width] = Color.Lerp(Color.white, Color.black, noiceMap[x, y]);
+                }
+                else //with color
+                {
+                    for(int i = 0; i < terrainTypes.Length;i++)
+                    {
+                        try
+                        {
+                            if (noiceMap[x, y] <= terrainTypes[i].height)
+                            {
+                                colors[x + y * width] = terrainTypes[i].terrainColor;
+                                break;
+                            }
+                        }
+                        catch
+                        {
+                            Debug.Log("index: " + i);
+                            Debug.Log("Array len: " + terrainTypes.Length);
+                            Application.Quit();
+                            break;
+                            
+                        }
+                    }
+                }
+                    
             }
         }
         texture.SetPixels(colors);
