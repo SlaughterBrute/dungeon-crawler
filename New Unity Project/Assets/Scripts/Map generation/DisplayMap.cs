@@ -25,27 +25,16 @@ public class DisplayMap : MonoBehaviour
                 {
                     for(int i = 0; i < terrainTypes.Length;i++)
                     {
-                        try
+                        if (noiceMap[x, y] <= terrainTypes[i].height)
                         {
-                            if (noiceMap[x, y] <= terrainTypes[i].height)
-                            {
-                                colors[x + y * width] = terrainTypes[i].terrainColor;
-                                break;
-                            }
-                        }
-                        catch
-                        {
-                            Debug.Log("index: " + i);
-                            Debug.Log("Array len: " + terrainTypes.Length);
-                            Application.Quit();
+                            colors[x + y * width] = terrainTypes[i].terrainColor;
                             break;
-                            
-                        }
+                        }      
                     }
                 }
-                    
             }
         }
+
         texture.SetPixels(colors);
         texture.Apply();
 
