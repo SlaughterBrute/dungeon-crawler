@@ -62,22 +62,27 @@ public class ScriptedGroundTile : Tile
     {
         switch (mask) // fixa senare beroende på hur vägg och mark förhållande
         {
-            case 0: return 0; //Nothing
-            case 3:
-            case 6:
-            case 9:
-            case 12: return 1; // corner (corner and floor)
-            case 1:
-            case 2:
-            case 4:
-            case 5:
-            case 10:
-            case 8: return 2; // ...()
-            case 7:
-            case 11:
-            case 13:
-            case 14: return 3; // 3-way cross section (wall on one side of the floor)
-            case 15: return 4; // 4-way cross section (floor)
+            case 0: return 4; // 4 shadows
+            case 1: return 3; // 3 shadows
+            case 2: return 3;
+            case 3: return 2; // 2 shadows (L-shape)
+            case 4: return 3;
+            case 5: return 5; // 2 shadows (| | - shape, corridor)
+            case 6: return 2;
+            case 7: return 1;
+            case 8: return 3;
+            case 9: return 2;
+            case 10: return 5;
+            case 11: return 1;
+            case 12: return 2;
+            case 13: return 1;
+            case 14: return 1;
+            case 15: return 0;
+
+
+            default:
+                Debug.LogWarning("Scripted tile tried to get non existing sprite");
+                break;
         }
         return -1;
     }
@@ -86,18 +91,26 @@ public class ScriptedGroundTile : Tile
     {
         switch (mask) //fix after GetIndex
         {
+            case 0:
+            case 1:
+            case 3:
+            case 5:
+            case 13:
+            case 15: break;
+
+            case 2: return Quaternion.Euler(0f, 0f, -90f);
+            case 6: return Quaternion.Euler(0f, 0f, -90f);
+            case 11: return Quaternion.Euler(0f, 0f, -90f);
+
+            case 4:
+            case 7:
+            case 12: return Quaternion.Euler(0f, 0f, 180f);
+
+            case 8:
             case 9:
             case 10:
-            case 7:
-            case 2:
-            case 8:
-                return Quaternion.Euler(0f, 0f, -90f);
-            case 3:
-            case 14:
-                return Quaternion.Euler(0f, 0f, -180f);
-            case 6:
-            case 13:
-                return Quaternion.Euler(0f, 0f, -270f);
+            case 14: return Quaternion.Euler(0f, 0f, 90f);
+            
         }
         return Quaternion.Euler(0f, 0f, 0f);
     }
