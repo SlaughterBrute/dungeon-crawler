@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -16,6 +17,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private float lacunarity; // Detail for each octave
     [SerializeField] private string seed;
     [SerializeField] private TerrainType[] terrainTypes;
+
+    [SerializeField] private bool createTiledMap;
+    [SerializeField] private Tilemap tilemapGround;
+    [SerializeField] private Tilemap tilemapWall;
+    [SerializeField] private Tile groudTile;
+    [SerializeField] private Tile wallTile;
+
 
     public void OnValidate()
     {
@@ -36,6 +44,10 @@ public class MapGenerator : MonoBehaviour
     public void GenerateMap()
     {
         float[,] noiceMap = NoiseGenerator.GenerateNoiceMap(mapWidth, mapHeight, noiseScale, octaves, persistance, lacunarity, seed, x, y);
+        if (createTiledMap)
+        {
+            GenerateTiledCave(noiceMap);
+        }
         DisplayMapReference = FindObjectOfType<DisplayMap>();
         DisplayMapReference.DrawMap(noiceMap, terrainTypes);
     }
@@ -45,7 +57,26 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         x += 1 * Time.deltaTime;
     }
+
+    private void GenerateTiledCave(float[,] noiceMap)
+    {
+        tilemapGround.ClearAllTiles();
+        for (int x = 0; x < mapWidth; x++)
+        {
+            for (int y = 0; y < mapHeight; y++)
+            {
+                if (noiceMap[x, y] > 0.4)
+                {
+                    Vector3Int position = new Vector3Int(x, y, 0);
+                    tilemapGround.SetTile(position, groudTile);
+                }
+                
+            }
+        }
+
+    }
 }
+
 
 [System.Serializable]
 public struct TerrainType{
