@@ -57,10 +57,10 @@ public class ScriptedShadowTile : Tile
         Debug.Log("Index: " + mask);
         switch (mask) // fixa senare beroende på hur vägg och mark förhållande
         {
+            case 11:
             case 15: return 0;
 
             case 7:
-            case 11:
             case 13:
             case 14: return 1; // 1 shadow
 
@@ -165,7 +165,7 @@ public class ScriptedShadowTile : Tile
 
 #if UNITY_EDITOR
     // The following is a helper that adds a menu item to create a RoadTile Asset
-    [MenuItem("Assets/Create/ShadowTile")]
+    [MenuItem("Assets/Create/ScriptedTile/ShadowTile")]
     public static void CreateGroundTile()
     {
         string path = EditorUtility.SaveFilePanelInProject("Save Shadow Tile", "New Shadow Tile", "Asset", "Save Shadow Tile", "Assets/Sprites/Tilesets");

@@ -10,7 +10,7 @@ TextureImporter:
     second: tra_1
   - first:
       213: -6524971674949106841
-    second: wall_vertical_top
+    second: wall_12
   - first:
       213: -694194468747405955
     second: tra_3
@@ -25,10 +25,10 @@ TextureImporter:
     second: tra_6
   - first:
       213: -3209294057841973949
-    second: wall_1x1
+    second: wall_15
   - first:
       213: -2155173194613547111
-    second: wall_vertical_mid
+    second: wall_13
   - first:
       213: 2373241387475499123
     second: tra_9
@@ -175,7 +175,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_vertical_top
+      name: wall_12
       rect:
         serializedVersion: 2
         x: 144
@@ -280,7 +280,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_1x1
+      name: wall_15
       rect:
         serializedVersion: 2
         x: 112
@@ -301,7 +301,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_vertical_mid
+      name: wall_13
       rect:
         serializedVersion: 2
         x: 144
@@ -406,7 +406,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_vertical_bottom
+      name: wall_14
       rect:
         serializedVersion: 2
         x: 144
@@ -469,7 +469,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_horizontal_left
+      name: wall_9
       rect:
         serializedVersion: 2
         x: 96
@@ -490,7 +490,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_horizontal_mid
+      name: wall_10
       rect:
         serializedVersion: 2
         x: 112
@@ -511,7 +511,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_horizontal_right
+      name: wall_11
       rect:
         serializedVersion: 2
         x: 128
@@ -532,7 +532,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_back_left_corner
+      name: wall_7
       rect:
         serializedVersion: 2
         x: 112
@@ -553,7 +553,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_back_mid
+      name: wall_0
       rect:
         serializedVersion: 2
         x: 128
@@ -574,7 +574,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_back_right_corner
+      name: wall_1
       rect:
         serializedVersion: 2
         x: 144
@@ -595,7 +595,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_left_mid
+      name: wall_6
       rect:
         serializedVersion: 2
         x: 112
@@ -616,7 +616,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_mid
+      name: wall_8
       rect:
         serializedVersion: 2
         x: 128
@@ -637,7 +637,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_right_mid
+      name: wall_2
       rect:
         serializedVersion: 2
         x: 144
@@ -679,7 +679,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_front_left_corner
+      name: wall_5
       rect:
         serializedVersion: 2
         x: 112
@@ -700,7 +700,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_front_mid
+      name: wall_4
       rect:
         serializedVersion: 2
         x: 128
@@ -721,7 +721,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_front_right_corner
+      name: wall_3
       rect:
         serializedVersion: 2
         x: 144
@@ -960,7 +960,7 @@ TextureImporter:
         width: 3
         height: 1
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -981,7 +981,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

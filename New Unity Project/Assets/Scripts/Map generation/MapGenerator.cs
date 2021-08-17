@@ -57,8 +57,8 @@ public class MapGenerator : MonoBehaviour
 
     private void Update()
     {
-        GenerateMap();
-        x += 1 * Time.deltaTime;
+        //GenerateMap();
+        //x += 1 * Time.deltaTime;
     }
 
     private void GenerateTiledCave(float[,] noiceMap)
@@ -69,11 +69,15 @@ public class MapGenerator : MonoBehaviour
         {
             for (int y = 0; y < mapHeight; y++)
             {
+                Vector3Int position = new Vector3Int(x, y, 0);
                 if (noiceMap[x, y] > 0.4)
                 {
-                    Vector3Int position = new Vector3Int(x, y, 0);
                     tilemapGround.SetTile(position, groudTile);
                     tilemapFloorShadow.SetTile(position, floorShadowTile);
+                }
+                else
+                {
+                    tilemapWall.SetTile(position, wallTile);
                 }
                 
             }
