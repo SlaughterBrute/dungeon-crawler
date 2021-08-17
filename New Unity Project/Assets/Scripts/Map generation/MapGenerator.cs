@@ -20,9 +20,12 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] private bool createTiledMap;
     [SerializeField] private Tilemap tilemapGround;
+    [SerializeField] private Tilemap tilemapFloorShadow;
     [SerializeField] private Tilemap tilemapWall;
     [SerializeField] private Tile groudTile;
     [SerializeField] private Tile wallTile;
+    [SerializeField] private Tile floorShadowTile;
+
 
 
     public void OnValidate()
@@ -60,6 +63,7 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateTiledCave(float[,] noiceMap)
     {
+        Random.InitState(123);
         tilemapGround.ClearAllTiles();
         for (int x = 0; x < mapWidth; x++)
         {
@@ -69,6 +73,7 @@ public class MapGenerator : MonoBehaviour
                 {
                     Vector3Int position = new Vector3Int(x, y, 0);
                     tilemapGround.SetTile(position, groudTile);
+                    tilemapFloorShadow.SetTile(position, floorShadowTile);
                 }
                 
             }

@@ -60,58 +60,74 @@ public class ScriptedGroundTile : Tile
 
     private int GetIndex(byte mask)
     {
-        switch (mask) // fixa senare beroende på hur vägg och mark förhållande
+        //switch (mask) // fixa senare beroende på hur vägg och mark förhållande
+        //{
+        //case 0: return 4; // 4 shadows
+        //case 1: return 3; // 3 shadows
+        //case 2: return 3;
+        //case 3: return 2; // 2 shadows (L-shape)
+        //case 4: return 3;
+        //case 5: return 5; // 2 shadows (| | - shape, corridor)
+        //case 6: return 2;
+        //case 7: return 1;
+        //case 8: return 3;
+        //case 9: return 2;
+        //case 10: return 5;
+        //case 11: return 1;
+        //case 12: return 2;
+        //case 13: return 1;
+        //case 14: return 1;
+        //case 15: return 0;
+
+
+        //default:
+        //        Debug.LogWarning("Scripted tile tried to get non existing sprite");
+        //        break;
+        //}
+        //return -1;
+
+        System.Random randGen = new System.Random();
+        //Random.seed = 123;
+        //Random.InitState(123);
+        int index = Random.Range(0, 100);
+        //Debug.Log(index);
+        if(index <= 90)
         {
-            case 0: return 4; // 4 shadows
-            case 1: return 3; // 3 shadows
-            case 2: return 3;
-            case 3: return 2; // 2 shadows (L-shape)
-            case 4: return 3;
-            case 5: return 5; // 2 shadows (| | - shape, corridor)
-            case 6: return 2;
-            case 7: return 1;
-            case 8: return 3;
-            case 9: return 2;
-            case 10: return 5;
-            case 11: return 1;
-            case 12: return 2;
-            case 13: return 1;
-            case 14: return 1;
-            case 15: return 0;
-
-
-            default:
-                Debug.LogWarning("Scripted tile tried to get non existing sprite");
-                break;
+            return 0;
         }
-        return -1;
+        else
+        {
+            return Random.Range(1, 5);
+        }
+
+        
     }
 
     private Quaternion GetRotation(byte mask)
     {
-        switch (mask) //fix after GetIndex
-        {
-            case 0:
-            case 1:
-            case 3:
-            case 5:
-            case 13:
-            case 15: break;
+        //switch (mask) //fix after GetIndex
+        //{
+        //    case 0:
+        //    case 1:
+        //    case 3:
+        //    case 5:
+        //    case 13:
+        //    case 15: break;
 
-            case 2: return Quaternion.Euler(0f, 0f, -90f);
-            case 6: return Quaternion.Euler(0f, 0f, -90f);
-            case 11: return Quaternion.Euler(0f, 0f, -90f);
+        //    case 2: return Quaternion.Euler(0f, 0f, -90f);
+        //    case 6: return Quaternion.Euler(0f, 0f, -90f);
+        //    case 11: return Quaternion.Euler(0f, 0f, -90f);
 
-            case 4:
-            case 7:
-            case 12: return Quaternion.Euler(0f, 0f, 180f);
+        //    case 4:
+        //    case 7:
+        //    case 12: return Quaternion.Euler(0f, 0f, 180f);
 
-            case 8:
-            case 9:
-            case 10:
-            case 14: return Quaternion.Euler(0f, 0f, 90f);
+        //    case 8:
+        //    case 9:
+        //    case 10:
+        //    case 14: return Quaternion.Euler(0f, 0f, 90f);
             
-        }
+        //}
         return Quaternion.Euler(0f, 0f, 0f);
     }
 
