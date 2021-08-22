@@ -14,6 +14,7 @@ public static class NoiseGenerator
             scale = 0.0001f;
         }
 
+        //seed
         int seedNumber = seed.GetHashCode();
         Vector2[] positionOffcet = new Vector2[octaves];
         System.Random randGen = new System.Random(seedNumber);
@@ -23,6 +24,7 @@ public static class NoiseGenerator
             positionOffcet[i].y = randGen.Next(-80000, 80000) + ypos;
         }
 
+        //used to correct zooming and scaling the noice
         float halfMapWidth = mapWidth / 2f;
         float halfMapHeight = mapHeight / 2f;
 

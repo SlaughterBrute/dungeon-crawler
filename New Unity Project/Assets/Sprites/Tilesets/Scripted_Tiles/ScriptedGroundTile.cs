@@ -60,11 +60,7 @@ public class ScriptedGroundTile : Tile
 
     private int GetIndex(byte mask)
     {
-        System.Random randGen = new System.Random();
-        //Random.seed = 123;
-        //Random.InitState(123);
         int index = Random.Range(0, 100);
-        //Debug.Log(index);
         if(index <= 90)
         {
             return 0;

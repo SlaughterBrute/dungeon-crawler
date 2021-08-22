@@ -54,7 +54,6 @@ public class ScriptedShadowTile : Tile
 
     private int GetIndex(byte mask)
     {
-        Debug.Log("Index: " + mask);
         switch (mask) // fixa senare beroende på hur vägg och mark förhållande
         {
             case 11:
@@ -112,22 +111,6 @@ public class ScriptedShadowTile : Tile
                 break;
         }
         return -1;
-
-        //System.Random randGen = new System.Random();
-        ////Random.seed = 123;
-        ////Random.InitState(123);
-        //int index = Random.Range(0, 100);
-        //Debug.Log(index);
-        //if (index <= 90)
-        //{
-        //    return 0;
-        //}
-        //else
-        //{
-        //    return Random.Range(1, 5);
-        //}
-
-
     }
 
     private Quaternion GetRotation(byte mask)

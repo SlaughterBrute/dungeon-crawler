@@ -5,8 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
-    [SerializeField] private int mapWidth;
-    [SerializeField] private int mapHeight;
+    [SerializeField] private int chunkSize;
+    //[SerializeField] private int chunkSize;
+    //[SerializeField] private int chunkSize;
     [SerializeField] private float noiseScale;
     private DisplayMap DisplayMapReference;
     public bool autoUpdateMap;
@@ -30,13 +31,9 @@ public class MapGenerator : MonoBehaviour
 
     public void OnValidate()
     {
-        if (mapWidth < 1)
+        if (chunkSize < 1)
         {
-            mapWidth = 1;
-        }
-        if(mapHeight < 1)
-        {
-            mapHeight = 1;
+            chunkSize = 1;
         }
         if(octaves < 1)
         {
@@ -46,7 +43,7 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-        float[,] noiceMap = NoiseGenerator.GenerateNoiceMap(mapWidth, mapHeight, noiseScale, octaves, persistance, lacunarity, seed, x, y);
+        float[,] noiceMap = NoiseGenerator.GenerateNoiceMap(chunkSize, chunkSize, noiseScale, octaves, persistance, lacunarity, seed, x, y);
         if (createTiledMap)
         {
             GenerateTiledCave(noiceMap);
@@ -65,9 +62,11 @@ public class MapGenerator : MonoBehaviour
     {
         Random.InitState(123);
         tilemapGround.ClearAllTiles();
-        for (int x = 0; x < mapWidth; x++)
+        tilemapWall.ClearAllTiles();
+        tilemapFloorShadow.ClearAllTiles();
+        for (int x = 0; x < chunkSize; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < chunkSize; y++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
                 if (noiceMap[x, y] > 0.4)
