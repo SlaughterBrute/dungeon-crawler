@@ -77,6 +77,7 @@ public class MapGenerator : MonoBehaviour
                 else
                 {
                     tilemapWall.SetTile(position, wallTile);
+					tilemapWall.SetColliderType(position, Tile.ColliderType.Grid);
                 }
                 
             }
