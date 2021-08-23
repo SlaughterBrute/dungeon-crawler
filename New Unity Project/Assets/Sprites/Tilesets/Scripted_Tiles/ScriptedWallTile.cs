@@ -52,7 +52,7 @@ public class ScriptedWallTile : Tile
             m.SetTRS(Vector3.zero, GetRotation((byte)mask), Vector3.one);
             tileData.transform = m;
             tileData.flags = TileFlags.LockTransform;
-            tileData.colliderType = ColliderType.None;
+            tileData.colliderType = this.colliderType;
         }
         else
         {

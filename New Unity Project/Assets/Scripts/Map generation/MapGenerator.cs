@@ -54,23 +54,27 @@ public class MapGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
-        {
-            Vector3Int pos = new Vector3Int(1, 0, 0);
-            Debug.Log(tilemapWall.GetColliderType(pos));
-            //Debug.Log(wallTile.colliderType);
-        }
-        //GenerateMap();
-        //x += 1 * Time.deltaTime;
+
     }
 
     private void GenerateTiledCave(float[,] noiceMap)
     {
+        CompositeCollider2D composite = tilemapWall.GetComponent<CompositeCollider2D>();
+        if (composite != null)
+        {
+            composite.generationType = CompositeCollider2D.GenerationType.Manual;
+        }
+        else
+        {
+            Debug.LogError("Mapgenerator could not find tilemapWall's composite collider 2d");
+        }
+
         Debug.Log("Build");
         Random.InitState(123);
         tilemapGround.ClearAllTiles();
         tilemapWall.ClearAllTiles();
         tilemapFloorShadow.ClearAllTiles();
+        
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
@@ -84,21 +88,16 @@ public class MapGenerator : MonoBehaviour
                 else
                 {
                     tilemapWall.SetTile(position, wallTile);
-                    tilemapWall.SetColliderType(position, wallTile.colliderType);
                 }
             }
         }
 
-        CompositeCollider2D composite = tilemapWall.GetComponent<CompositeCollider2D>();
+        
         if (composite != null)
         {
-            composite.generationType = CompositeCollider2D.GenerationType.Manual;
             composite.GenerateGeometry();
         }
-        else
-        {
-            Debug.LogError("Map generator could not find walltilemap's composite collider 2d");
-        }
+       
     }
 }
 
