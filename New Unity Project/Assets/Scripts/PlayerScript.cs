@@ -57,8 +57,10 @@ public class PlayerScript : MonoBehaviour
         change.y = Input.GetAxisRaw("Vertical");
         change.Normalize();
         change *= speed * Time.deltaTime;
-        
-        rb.transform.Translate(change);
+        change += transform.position;
+
+        rb.MovePosition(change);
+        //rb.transform.Translate(change);
     }
 
     public void TriggerWithEventExample()

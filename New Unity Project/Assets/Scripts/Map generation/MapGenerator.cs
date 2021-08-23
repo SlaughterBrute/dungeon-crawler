@@ -13,8 +13,8 @@ public class MapGenerator : MonoBehaviour
     public bool autoUpdateMap;
     [SerializeField] private float x;
     [SerializeField] private float y;
-    [SerializeField][Range(1,5)] private int octaves;
-    [SerializeField][Range(0,1)] private float persistance;
+    [SerializeField] [Range(1, 5)] private int octaves;
+    [SerializeField] [Range(0, 1)] private float persistance;
     [SerializeField] private float lacunarity; // Detail for each octave
     [SerializeField] private string seed;
     [SerializeField] private TerrainType[] terrainTypes;
@@ -35,7 +35,7 @@ public class MapGenerator : MonoBehaviour
         {
             chunkSize = 1;
         }
-        if(octaves < 1)
+        if (octaves < 1)
         {
             octaves = 1;
         }
@@ -54,12 +54,19 @@ public class MapGenerator : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButton(0))
+        {
+            Vector3Int pos = new Vector3Int(1, 0, 0);
+            Debug.Log(tilemapWall.GetColliderType(pos));
+            //Debug.Log(wallTile.colliderType);
+        }
         //GenerateMap();
         //x += 1 * Time.deltaTime;
     }
 
     private void GenerateTiledCave(float[,] noiceMap)
     {
+        Debug.Log("Build");
         Random.InitState(123);
         tilemapGround.ClearAllTiles();
         tilemapWall.ClearAllTiles();
@@ -77,14 +84,25 @@ public class MapGenerator : MonoBehaviour
                 else
                 {
                     tilemapWall.SetTile(position, wallTile);
-					tilemapWall.SetColliderType(position, Tile.ColliderType.Grid);
+                    tilemapWall.SetColliderType(position, wallTile.colliderType);
                 }
-                
             }
         }
 
+        CompositeCollider2D composite = tilemapWall.GetComponent<CompositeCollider2D>();
+        if (composite != null)
+        {
+            composite.generationType = CompositeCollider2D.GenerationType.Manual;
+            composite.GenerateGeometry();
+        }
+        else
+        {
+            Debug.LogError("Map generator could not find walltilemap's composite collider 2d");
+        }
     }
 }
+
+
 
 
 [System.Serializable]

@@ -72,7 +72,7 @@ public class ScriptedWallTile : Tile
 
     private int GetIndex(byte mask)
     {
-        Debug.Log(mask);
+        //Debug.Log(mask);
         switch (mask) // fixa senare beroende på hur vägg och mark förhållande
         {
             case 0: return 15;
