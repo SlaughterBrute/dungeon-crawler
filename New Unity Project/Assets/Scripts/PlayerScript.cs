@@ -6,9 +6,9 @@ public class PlayerScript : MonoBehaviour
 {
     private float horizontal;
     private float vertical;
-	private Vector3 change;
+	private Vector3 moveDirection;
 	[SerializeField]
-	private float speed = 0.8f;
+	private float moveSpeed = 5f;
 	Rigidbody2D rb;
     [SerializeField]
     private float shootDelay = 1f; // could connect to Scriptable object to be able to change (could be useful for powerups)
@@ -25,7 +25,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+		GetMovementInput();
         Shoot();
     }
 
@@ -50,20 +50,37 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    void Move()
+    void GetMovementInput()
     {
-		change = Vector3.zero;
-		change.x = Input.GetAxisRaw("Horizontal");
-        change.y = Input.GetAxisRaw("Vertical");
-        change.Normalize();
-        change *= speed * Time.deltaTime;
-        change += transform.position;
+		float moveX = 0f;
+		float moveY = 0f;
 
-        rb.MovePosition(change);
-        //rb.transform.Translate(change);
-    }
+		if(Input.GetKey(KeyCode.W))
+		{
+			moveY = +1f;
+		}
+		if(Input.GetKey(KeyCode.S))
+		{
+			moveY = -1f;
+		}
+		if (Input.GetKey(KeyCode.A))
+		{
+			moveX = -1f;
+		}
+		if (Input.GetKey(KeyCode.D))
+		{
+			moveX = +1f;
+		}
 
-    public void TriggerWithEventExample()
+		moveDirection = new Vector3(moveX, moveY).normalized;
+	}
+
+	private void FixedUpdate()
+	{
+		rb.velocity = moveDirection * moveSpeed;
+	}
+
+	public void TriggerWithEventExample()
     {
         Debug.Log("I am triggered with a lose coupled signal event system");
     }
