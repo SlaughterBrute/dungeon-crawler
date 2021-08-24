@@ -99,6 +99,11 @@ public class MapGenerator : MonoBehaviour
         }
        
     }
+
+    public int getChunkSize()
+    {
+        return chunkSize;
+    }
 }
 
 
