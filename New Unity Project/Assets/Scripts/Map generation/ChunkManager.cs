@@ -8,6 +8,7 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private int numberOfInstansiatedNeighbouringChunks;
     [SerializeField] private Transform playerTransform;
     [SerializeField] public static Vector2 playerPosition;
+    private MapGenerator mapGen;
     private int chunkSize;
     
     Dictionary<Vector2Int, Chunk> instansiatedChunksDict = new Dictionary<Vector2Int, Chunk>();
@@ -16,7 +17,7 @@ public class ChunkManager : MonoBehaviour
     {
         playerPosition = playerTransform.position;
 
-        MapGenerator mapGen = FindObjectOfType<MapGenerator>();
+         mapGen = FindObjectOfType<MapGenerator>();
         if(mapGen == null)
         {
             Debug.LogError("ChunkManager need MapGenerator to function. MapGenerator not found");
@@ -25,7 +26,6 @@ public class ChunkManager : MonoBehaviour
         else
         {
             chunkSize = mapGen.getChunkSize();
-            Debug.Log("ChunkManager retrieved chunkSize: " + chunkSize);
         }
        
     }
@@ -44,7 +44,7 @@ public class ChunkManager : MonoBehaviour
         //Instanciate chunks if they haven't been instanciated already
         for (int chunkCoordOffsetX = -numberOfInstansiatedNeighbouringChunks; chunkCoordOffsetX <= numberOfInstansiatedNeighbouringChunks; chunkCoordOffsetX++)
         {
-            for (int chunkCoordOffsetY = numberOfInstansiatedNeighbouringChunks; chunkCoordOffsetY <= numberOfInstansiatedNeighbouringChunks; chunkCoordOffsetY++)
+            for (int chunkCoordOffsetY = -numberOfInstansiatedNeighbouringChunks; chunkCoordOffsetY <= numberOfInstansiatedNeighbouringChunks; chunkCoordOffsetY++)
             {
                 Vector2Int viewedChunkCoord = new Vector2Int(currentChunkCoord.x + chunkCoordOffsetX, currentChunkCoord.y + chunkCoordOffsetY);
 
@@ -56,13 +56,14 @@ public class ChunkManager : MonoBehaviour
                 else
                 {
                     //instansiate new chunk
-                    instansiatedChunksDict.Add(viewedChunkCoord, new Chunk(viewedChunkCoord, chunkSize, numberOfInstansiatedNeighbouringChunks));
+                    instansiatedChunksDict.Add(viewedChunkCoord, new Chunk(viewedChunkCoord, this));
                 }
                 
             }
         }
-    }
 
+
+    }
 
     public class Chunk
     {
@@ -71,23 +72,41 @@ public class ChunkManager : MonoBehaviour
         [SerializeField] private int size;
         [SerializeField] private Bounds bound;
         [SerializeField] private Grid grid;
-        [SerializeField] private Tilemap tilemapWall;
-        [SerializeField] private Tilemap tilemapFloorShadow;
-        [SerializeField] private Tilemap tilemapFloor;
+        //[SerializeField] private Tilemap tilemapWall;
+        //[SerializeField] private Tilemap tilemapFloorShadow;
+        //[SerializeField] private Tilemap tilemapFloor;
+        [SerializeField] private Tilemap[] tilemaps = new Tilemap[3];//0: floor, 1: wall, 2: shadow
+        private ChunkManager chunkManager;
         private int numberOfInstansiatedNeighbouringChunks;
 
-        public Chunk(Vector2 coord, int size, int neighbours)
+        public Chunk(Vector2 coord, ChunkManager chunkManager)
         {
+            this.chunkManager = chunkManager;
+            this.size = chunkManager.chunkSize;
             this.coord = coord;
-            this.size = size;
             this.position = new Vector2(coord.x * size, coord.y * size);
             this.bound = new Bounds(position, Vector2.one * size);
-            this.numberOfInstansiatedNeighbouringChunks = neighbours;
+            this.numberOfInstansiatedNeighbouringChunks = chunkManager.numberOfInstansiatedNeighbouringChunks;
 
             this.grid = CreateGrid();
-            this.tilemapWall = CreateTilemap("Wall", 1, grid);
-            this.tilemapFloorShadow = CreateTilemap("FloorShadow", 1, grid);
-            this.tilemapFloor = CreateTilemap("Floor", 0, grid);
+            this.tilemaps[0] = CreateTilemap("Floor", 0, grid);
+            this.tilemaps[1] = CreateTilemap("Wall", 1, grid);
+            this.tilemaps[2] = CreateTilemap("FloorShadow", 1, grid);
+
+            //wall setup
+            Rigidbody2D rb2d = this.tilemaps[1].transform.gameObject.AddComponent<Rigidbody2D>();
+            rb2d.bodyType = RigidbodyType2D.Static;
+            CompositeCollider2D cc2d = this.tilemaps[1].transform.gameObject.AddComponent<CompositeCollider2D>();
+            cc2d.generationType = CompositeCollider2D.GenerationType.Manual;
+            TilemapCollider2D tmc2d = this.tilemaps[1].transform.gameObject.AddComponent<TilemapCollider2D>();
+            tmc2d.usedByComposite = true;
+
+            PopulateTilemaps();
+        }
+
+        private void PopulateTilemaps()
+        {
+            this.chunkManager.mapGen.PopulateTilemapWithTiles(tilemaps, coord);
         }
 
         public Tilemap CreateTilemap(string tilemapName, int sortingOrder, Grid gridParrent)
@@ -98,8 +117,9 @@ public class ChunkManager : MonoBehaviour
             tr.sortingLayerName = "Default";
             tr.sortingOrder = sortingOrder;
 
-            //tm.tileAnchor = new Vector3(coord.x * size, coord.y * size, 0);
+            tm.tileAnchor = new Vector3(0, 0, 0);
             tileObject.transform.SetParent(gridParrent.transform);
+            tileObject.transform.localPosition = new Vector3(0, 0, 0);
             return tm;
         }
         public Grid CreateGrid()
@@ -107,6 +127,7 @@ public class ChunkManager : MonoBehaviour
             GameObject gridObject = new GameObject("SideGrid");
             Grid gr = gridObject.AddComponent<Grid>();
             gr.transform.position = new Vector3(position.x, position.y, 0);
+
             return gr;
         }
 

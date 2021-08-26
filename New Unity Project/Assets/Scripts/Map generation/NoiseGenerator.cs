@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class NoiseGenerator
 {
-    public static float[,] GenerateNoiceMap(int mapWidth, int mapHeight, float scale, int octaves, float persistance, float lacunarity, string seed, float xpos, float ypos)
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, float scale, int octaves, float persistance, float lacunarity, string seed, float xpos, float ypos)
     {   //octaves general shape
         //lacunarity small details in octaves
         //persistance lacunaritys influence on octaves

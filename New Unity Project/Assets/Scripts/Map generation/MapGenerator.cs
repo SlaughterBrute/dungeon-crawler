@@ -43,13 +43,20 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-        float[,] noiceMap = NoiseGenerator.GenerateNoiceMap(chunkSize, chunkSize, noiseScale, octaves, persistance, lacunarity, seed, x, y);
+        float[,] noiseMap = returnNoiseMap(x, y);
+        //float[,] noiseMap = NoiseGenerator.GenerateNoiseMap(chunkSize, chunkSize, noiseScale, octaves, persistance, lacunarity, seed, x, y);
         if (createTiledMap)
         {
-            GenerateTiledCave(noiceMap);
+            GenerateTiledCave(noiseMap);
         }
         DisplayMapReference = FindObjectOfType<DisplayMap>();
-        DisplayMapReference.DrawMap(noiceMap, terrainTypes);
+        DisplayMapReference.DrawMap(noiseMap, terrainTypes);
+    }
+
+    private float[,] returnNoiseMap(float x, float y)
+    {
+        float[,] noiseMap = NoiseGenerator.GenerateNoiseMap(chunkSize, chunkSize, noiseScale, octaves, persistance, lacunarity, seed, x, y);
+        return noiseMap;
     }
 
     private void Update()
@@ -57,7 +64,59 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    private void GenerateTiledCave(float[,] noiceMap)
+    public void PopulateTilemapWithTiles(Tilemap[] tilemaps, Vector2 chunkCoord)
+    {
+        //tilemap index
+        //0: floor
+        //1: wall
+        //2: shadow
+
+        CompositeCollider2D composite = tilemaps[1].GetComponent<CompositeCollider2D>();
+        if (composite != null)
+        {
+            Random.InitState(123);
+            tilemaps[0].ClearAllTiles();
+            tilemaps[1].ClearAllTiles();
+            tilemaps[2].ClearAllTiles();
+
+            float[,] noiseMap = returnNoiseMap(chunkCoord.x * chunkSize, chunkCoord.y * chunkSize);
+            for (int x = 0; x < chunkSize; x++)
+            {
+                for (int y = 0; y < chunkSize; y++)
+                {
+                    Vector3Int position = new Vector3Int(x, y, 0);
+                    if (noiseMap[x, y] > 0.4)
+                    {
+                        tilemaps[0].SetTile(position, groudTile);
+                        tilemaps[2].SetTile(position, floorShadowTile);
+                    }
+                    else
+                    {
+                        tilemaps[1].SetTile(position, wallTile);
+                    }
+                }
+            }
+            // need to generate colliders at the end of the frame, won't work otherwise. Probably a bug
+            StartCoroutine(GenerateCollitionGeometry(composite));
+        }
+        else
+        {
+            Debug.LogError("Mapgenerator could not find tilemapWall's composite collider 2d");
+        }
+
+    }
+
+    public IEnumerator GenerateCollitionGeometry(CompositeCollider2D cc2d)
+    {
+        if (cc2d != null)
+        {
+            yield return new WaitForEndOfFrame();
+            cc2d.GenerateGeometry();
+        }
+    }
+
+    //old system, populate predefined chunk with tiles
+    private void GenerateTiledCave(float[,] noiseMap)
     {
         CompositeCollider2D composite = tilemapWall.GetComponent<CompositeCollider2D>();
         if (composite != null)
@@ -80,7 +139,7 @@ public class MapGenerator : MonoBehaviour
             for (int y = 0; y < chunkSize; y++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
-                if (noiceMap[x, y] > 0.4)
+                if (noiseMap[x, y] > 0.4)
                 {
                     tilemapGround.SetTile(position, groudTile);
                     tilemapFloorShadow.SetTile(position, floorShadowTile);
