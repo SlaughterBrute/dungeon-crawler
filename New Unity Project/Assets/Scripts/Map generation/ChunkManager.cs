@@ -140,15 +140,12 @@ public class ChunkManager : MonoBehaviour
                 float distanceToChunk = Mathf.Sqrt(bound.SqrDistance(playerPosition));
                 if (distanceToChunk > (size * numberOfInstansiatedNeighbouringChunks))
                 {
-                    //grid should be destroyed or set invisible
-                    Debug.Log("Set unvissible");
                     grid.gameObject.SetActive(false);
                     yield break;
                 }
                 else
                 {
                     grid.gameObject.SetActive(true);
-                    Debug.Log("Everythging is guuchi");
                     yield return new WaitForSeconds(30);
                 }
             }
